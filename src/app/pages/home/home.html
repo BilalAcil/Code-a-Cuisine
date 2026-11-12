@@ -1,0 +1,37 @@
+<main class="hero">
+  <div class="hero__inner">
+    <header class="hero__header">
+      <a routerLink="/" aria-label="Code à Cuisine, home">
+        <img src="images/logo-cream.png" alt="Code à Cuisine" width="142" height="48" />
+      </a>
+    </header>
+
+    <section class="hero__intro">
+      <p class="hero__eyebrow">AI-Powered recipe generator</p>
+      <h1 class="hero__title">Code à Cuisine</h1>
+      <a class="hero__button" routerLink="/generate">Get started</a>
+    </section>
+
+    <nav class="hero__cookbook" aria-label="Cookbook">
+      <p class="hero__cookbook-text">Hungry for inspiration?</p>
+      <a class="hero__cookbook-link" routerLink="/cookbook">
+        Go to cookbook
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+          <path d="M3 12h17m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </a>
+    </nav>
+
+    <div class="hero__plates" aria-hidden="true">
+      @for (plate of plates; track plate) {
+        <img
+          [class]="'hero__plate hero__plate--' + plate"
+          [src]="'images/plate-' + plate + '.webp'"
+          alt=""
+          width="900"
+          height="896"
+        />
+      }
+    </div>
+  </div>
+</main>

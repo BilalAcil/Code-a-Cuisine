@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global design tokens and base styles. Fonts are self-hosted via @fontsource (see angular.json). */
+
+:root {
+  --color-green: #396039;
+  --color-cream: #faf0e6;
+  --color-green-text: #008000;
+
+  --font-heading: 'Ubuntu', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%; /* 16px base, never smaller */
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-green);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
