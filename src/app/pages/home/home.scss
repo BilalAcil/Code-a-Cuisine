@@ -116,7 +116,7 @@ $plate-overlap: 0.35;
   &__plate {
     width: var(--plate-size);
     height: auto;
-    aspect-ratio: 1;
+    aspect-ratio: 1; // the shadow is part of the image file
 
     // Every plate after the first one overlaps the plate above it.
     & + & {
