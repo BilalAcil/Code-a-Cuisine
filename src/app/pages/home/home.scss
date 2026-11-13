@@ -7,7 +7,7 @@ $plate-overlap: 0.35;
 
 .hero {
   --hero-height: max(100svh, 640px);
-  --plate-size: calc(var(--hero-height) * 0.46);
+  --plate-size: min(480px, 38vw); // 480px design size, shrinks on narrow desktops
 
   position: relative;
   height: var(--hero-height);
@@ -116,7 +116,7 @@ $plate-overlap: 0.35;
   &__plate {
     width: var(--plate-size);
     height: auto;
-    aspect-ratio: 900 / 896;
+    aspect-ratio: 1;
 
     // Every plate after the first one overlaps the plate above it.
     & + & {
@@ -135,8 +135,9 @@ $plate-overlap: 0.35;
   }
 }
 
-// Widescreen: five smaller plates fill the full height; content keeps its 1440px width.
-@media (min-width: $bp-wide) {
+// Widescreen (wider than the 1440px desktop design): five smaller plates fill the full height;
+// content keeps its 1440px width.
+@media (min-width: $bp-wide + 1) {
   .hero {
     --plate-size: calc(var(--hero-height) * 0.3);
 

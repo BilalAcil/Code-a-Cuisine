@@ -29,6 +29,25 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Plain text shows the default arrow; only interactive elements change the cursor. */
+body {
+  cursor: default;
+}
+
+a,
+button,
+select,
+summary,
+label[for],
+[role='button'] {
+  cursor: pointer;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
 img {
   display: block;
   max-width: 100%;
