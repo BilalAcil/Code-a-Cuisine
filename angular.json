@@ -33,9 +33,11 @@
             "styles": [
               "@fontsource/ubuntu/400.css",
               "@fontsource/ubuntu/500.css",
-              "@fontsource/quicksand/300.css",
+              "@fontsource/ubuntu/700.css",
               "@fontsource/quicksand/400.css",
               "@fontsource/quicksand/500.css",
+              "@fontsource/quicksand/600.css",
+              "@fontsource/quicksand/700.css",
               "src/styles.scss"
             ]
           },

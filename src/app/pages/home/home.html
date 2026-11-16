@@ -14,10 +14,18 @@
 
     <nav class="hero__cookbook" aria-label="Cookbook">
       <p class="hero__cookbook-text">Hungry for inspiration?</p>
-      <a class="hero__cookbook-link" routerLink="/cookbook">
+      <a
+        class="hero__cookbook-link"
+        routerLink="/cookbook"
+        (mouseenter)="blinkArrow()"
+        (mouseleave)="blinkArrow()"
+      >
         Go to cookbook
-        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-          <path d="M3 12h17m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <svg
+          [class.arrow-blink-odd]="arrowBlinks() % 2 === 1"
+          [class.arrow-blink-even]="arrowBlinks() > 0 && arrowBlinks() % 2 === 0"
+          viewBox="0 0 34 24" width="34" height="24" aria-hidden="true" focusable="false">
+          <path d="M3 12h28m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" />
         </svg>
       </a>
     </nav>
