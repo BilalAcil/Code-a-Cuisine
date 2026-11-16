@@ -70,7 +70,7 @@ $plate-overlap: 0.35;
     font-weight: 600;
     white-space: nowrap;
     text-decoration: none;
-    transition: width 0.2s ease, background-color 0.2s ease;
+    transition: width 300ms ease-out, background-color 300ms ease-out;
 
     &:hover {
       width: 186px;
