@@ -1,5 +1,118 @@
-<main class="page">
-  <a routerLink="/">&larr; Back to start</a>
-  <h1>Generate recipes</h1>
-  <p>Coming soon.</p>
-</main>
+<div class="generate">
+  <header class="generate__header">
+    <a routerLink="/" aria-label="Code à Cuisine, home">
+      <img src="images/logo-green.png" alt="Code à Cuisine" width="142" height="48" />
+    </a>
+  </header>
+
+  <main class="generate__main">
+    <h1 class="generate__title">Generate recipe</h1>
+    <p class="generate__subtitle">
+      Got random stuff in your kitchen? Pop it in—we've got the perfect recipe waiting.
+    </p>
+
+    <div class="generate__cards">
+      <section
+        class="generate__card generate__card--input"
+        [class.generate__card--open]="showSuggestions() || unitOpen()"
+        aria-label="Add ingredient"
+      >
+        <form class="ingredient-form" (ngSubmit)="addIngredient()">
+          <div class="ingredient-form__field ingredient-form__field--name">
+            <label for="ingredient-name">Ingredient</label>
+            <span class="ingredient-form__ghost" aria-hidden="true"
+              ><span class="ingredient-form__ghost-typed">{{ name() }}</span>{{ completion() }}</span
+            >
+            <input
+              id="ingredient-name"
+              name="name"
+              type="text"
+              autocomplete="off"
+              maxlength="60"
+              aria-autocomplete="both"
+              aria-controls="ingredient-suggestions"
+              [(ngModel)]="name"
+              (focus)="focused.set(true)"
+              (blur)="focused.set(false)"
+              (keydown.tab)="acceptCompletion($event)"
+              (keydown.arrowright)="acceptCompletion($event)"
+            />
+            @if (showSuggestions()) {
+              <ul class="ingredient-form__suggestions" id="ingredient-suggestions">
+                @for (suggestion of matches(); track suggestion) {
+                  <li>
+                    <button type="button" (mousedown)="$event.preventDefault()" (click)="selectSuggestion(suggestion)">
+                      {{ suggestion }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+
+          <div class="ingredient-form__field">
+            <label for="ingredient-amount">Serving size</label>
+            <div class="ingredient-form__amount">
+              <input
+                id="ingredient-amount"
+                name="amount"
+                type="number"
+                min="1"
+                max="100000"
+                inputmode="decimal"
+                [(ngModel)]="amount"
+                (keydown)="blockInvalidKeys($event)"
+              />
+              <button
+                id="ingredient-unit"
+                class="ingredient-form__unit"
+                type="button"
+                aria-haspopup="true"
+                [attr.aria-expanded]="unitOpen()"
+                [attr.aria-label]="'Unit: ' + unitLabel()"
+                (click)="toggleUnits()"
+                (blur)="closeUnits()"
+                (keydown.escape)="closeUnits()"
+              >
+                <span>{{ unitLabel() }}</span>
+                <svg viewBox="0 0 10 5" width="10" height="5" aria-hidden="true" focusable="false">
+                  <path d="M0 0h10L5 5z" fill="currentColor" />
+                </svg>
+              </button>
+              <button class="ingredient-form__add" type="submit" aria-label="Add ingredient" [disabled]="!canAdd()">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                  <path d="M11 5h2v14h-2z M5 11h14v2H5z" fill="currentColor" />
+                </svg>
+              </button>
+            </div>
+            @if (unitOpen()) {
+              <ul class="ingredient-form__suggestions ingredient-form__suggestions--units">
+                @for (option of unitOptions; track option.value) {
+                  <li>
+                    <button type="button" (mousedown)="$event.preventDefault()" (click)="selectUnit(option.value)">
+                      {{ option.label }}
+                    </button>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </form>
+      </section>
+
+      <section class="generate__card generate__card--list" aria-labelledby="ingredient-list-title">
+        <h2 class="generate__card-title" id="ingredient-list-title">List of your ingredients</h2>
+        <ul class="ingredient-list">
+          @for (item of recipeForm.ingredients(); track $index) {
+            <li class="ingredient-list__item">
+              <span>{{ item.amount }}{{ item.unit }} {{ item.name }}</span>
+              <button type="button" [attr.aria-label]="'Remove ' + item.name" (click)="removeIngredient($index)">
+                Remove
+              </button>
+            </li>
+          }
+        </ul>
+      </section>
+    </div>
+  </main>
+</div>

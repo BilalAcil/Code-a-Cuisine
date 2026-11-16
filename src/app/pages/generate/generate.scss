@@ -1,3 +1,284 @@
-.page {
-  padding: 2rem clamp(1.5rem, 8.9vw, 8rem);
+.generate {
+  min-height: 100svh;
+  padding: 2.5rem clamp(1.5rem, 4.45vw, 4rem) 3rem;
+  background-color: #fff;
+  color: var(--color-title);
+
+  &__header a {
+    display: inline-block;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  &__title {
+    margin: 0;
+    color: var(--color-title);
+    font-size: clamp(2.25rem, 3.75vw, 3.375rem); // 54px at 1440px and wider
+    font-weight: 600;
+    line-height: 1.204; // 65px at 54px
+    text-align: center;
+  }
+
+  // 578px + 56px gap + 478px = 1112px. On narrower screens the cards shrink, then stack.
+  &__cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch; // cards are as tall as the container
+    align-content: flex-start;
+    min-height: 210px;
+    gap: 56px;
+    width: 1112px;
+    max-width: 100%;
+    margin-top: 4rem;
+  }
+
+  &__card {
+    border-radius: 20px;
+    background-color: #3960394d;
+
+    padding: 25px 34px;
+
+    &--input {
+      flex: 1 1 578px;
+      max-width: 578px;
+      align-self: flex-start;
+      height: 176px;
+
+      // While the suggestion list is open the card is as tall as needed: 176px minimum, 210px maximum.
+      &.generate__card--open {
+        height: auto;
+        min-height: 176px;
+        max-height: 210px;
+      }
+    }
+
+    &--list {
+      flex: 1 1 478px;
+      max-width: 478px;
+      min-height: 210px; // grows with the ingredient list
+    }
+  }
+
+  &__card-title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .ingredient-form {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+
+    &__field {
+      min-width: 185px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      // Label on top; the ghost text and the input share the second row; suggestions below.
+      &--name {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto auto;
+        align-content: start;
+        row-gap: 1rem;
+        flex: 0 1 300px;
+        width: 300px;
+        min-width: 0;
+      }
+    }
+
+    // Grey rest of the best match, shown behind the transparent input (e.g. "Pas" + "ta").
+    &__ghost {
+      grid-row: 2;
+      grid-column: 1;
+      display: flex;
+      align-items: center;
+      height: 36px;
+      padding: 0 1rem;
+      border-radius: 20px;
+      background-color: #faf0e6cc;
+      font-weight: 500;
+      line-height: 20px; // same as the input, so both texts sit on the same baseline
+      color: rgb(16 49 11 / 0.35);
+      white-space: pre;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    &__ghost-typed {
+      color: transparent;
+    }
+
+    &__suggestions {
+      grid-row: 3;
+      grid-column: 1;
+      max-height: 84px;
+      margin: -0.75rem 0 0; // pulls the list closer so 3 suggestions fit into 210px
+      padding: 0 0 0 22px; // 22px + 8px button padding keeps the text 30px from the left edge
+      overflow: hidden;
+      list-style: none;
+
+      button {
+        display: block;
+        width: 100%;
+        height: 28px;
+        padding: 0 8px;
+        border-radius: 8px;
+        line-height: 28px;
+        border: 0;
+        background: none;
+        color: #10310b;
+        font: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        text-align: left;
+
+        &:hover {
+          background-color: #faf0e699;
+        }
+      }
+    }
+
+    label {
+      color: #10310b;
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 20px;
+    }
+
+    input,
+    select {
+      height: 36px;
+      padding: 0 1rem;
+      border: 0;
+      border-radius: 20px;
+      background-color: #faf0e6cc;
+      color: #10310b;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 20px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__field--name input {
+      grid-row: 2;
+      grid-column: 1;
+      width: 100%;
+      background-color: transparent; // the ghost element behind provides the background
+    }
+
+    &__field--name label {
+      grid-row: 1;
+    }
+
+    &__amount {
+      display: flex;
+      gap: 0.5rem;
+
+      input {
+        width: 60px;
+        font-size: 1.125rem; // 18px
+
+        // Hide the up/down arrows; numbers are typed in.
+        appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          margin: 0;
+          appearance: none;
+        }
+      }
+    }
+
+    // Custom dropdown button that replaces the native select.
+    &__unit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 72px;
+      height: 36px;
+      padding: 0 5px 4px; // 4px at the bottom moves the text up by 2px
+      border: 0;
+      border-radius: 20px;
+      background-color: #faf0e6cc;
+      color: #10310b;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 20px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    // The unit list reuses the suggestion list design, indented to start under the unit button.
+    &__suggestions--units {
+      grid-row: auto;
+      padding-left: 68px; // 60px amount + 8px gap: the items sit directly under the unit button
+
+      button {
+        width: 72px; // same width as the unit button
+        border-radius: 48px;
+        text-align: center;
+      }
+    }
+
+    &__add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px; // 24px icon + 2 x 6px = 36px, same height as the inputs
+      border: 0;
+      background: none;
+      color: #10310b;
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.4;
+      }
+    }
+  }
+
+  .ingredient-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.25rem 0;
+    }
+
+    button {
+      border: 0;
+      background: none;
+      color: inherit;
+      font: inherit;
+      text-decoration: underline;
+    }
+  }
+
+  &__subtitle {
+    margin: 1.5rem 0 0;
+    font-size: clamp(1.125rem, 1.67vw, 1.5rem); // 24px at 1440px and wider
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+  }
 }
