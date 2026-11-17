@@ -37,6 +37,41 @@
     margin-top: 4rem;
   }
 
+  // Same width as the cards; the button sits at the right edge, 56px (3.5rem) below the cards.
+  // It is only shown when the list has at least one ingredient.
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 1112px;
+    max-width: 100%;
+    margin-top: 3.5rem;
+  }
+
+  &__next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 162px;
+    height: 62px;
+    padding: 16px 26px;
+    border: 0;
+    background-color: #396039;
+    color: #faf0e6;
+    font: inherit;
+    font-size: 1.5rem; // 24px
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+
+    &:hover {
+      background-color: #055e05;
+      color: #fff;
+    }
+  }
+
   &__card {
     border-radius: 20px;
     background-color: #3960394d;
@@ -61,13 +96,17 @@
       flex: 1 1 478px;
       max-width: 478px;
       min-height: 210px; // grows with the ingredient list
+      padding: 24px;
     }
   }
 
+  // Same look as the "Ingredient" label.
   &__card-title {
-    margin: 0 0 0.75rem;
-    font-size: 1rem;
+    margin: 0 0 1.5rem;
+    color: #10310b;
+    font-size: 1.25rem;
     font-weight: 500;
+    line-height: 20px;
   }
 
   .ingredient-form {
@@ -140,8 +179,9 @@
         font-weight: 500;
         text-align: left;
 
+        // Left to right fade: the right 30% fades out to transparent.
         &:hover {
-          background-color: #faf0e699;
+          background: linear-gradient(to right, #faf0e699 70%, #faf0e600 100%);
         }
       }
     }
@@ -188,7 +228,9 @@
 
       input {
         width: 60px;
+        padding: 0 5px 2px; // 5px sides like the unit button; 2px at the bottom centers the digits vertically
         font-size: 1.125rem; // 18px
+        text-align: center;
 
         // Hide the up/down arrows; numbers are typed in.
         appearance: textfield;
@@ -222,6 +264,17 @@
       &:focus {
         outline: none;
       }
+
+      // Lowercase text sits below the center of its line box, so the arrow moves down a little.
+      svg {
+        transform: translateY(2px);
+        transition: transform 200ms ease-out;
+      }
+
+      // The arrow points up while the list is open.
+      &--open svg {
+        transform: translateY(2px) rotate(180deg);
+      }
     }
 
     // The unit list reuses the suggestion list design, indented to start under the unit button.
@@ -233,6 +286,11 @@
         width: 72px; // same width as the unit button
         border-radius: 48px;
         text-align: center;
+
+        // Fade from the middle: the outer 30% on the left and on the right fade out to transparent.
+        &:hover {
+          background: linear-gradient(to right, #faf0e600 0%, #faf0e699 30%, #faf0e699 70%, #faf0e600 100%);
+        }
       }
     }
 
@@ -253,24 +311,140 @@
   }
 
   .ingredient-list {
+    // The columns are shared by all rows (subgrid), so names stay aligned even for longer amounts.
+    display: grid;
+    grid-template-columns: minmax(68px, max-content) 1fr 19px 19px;
+    gap: 8px 15px; // rows are 38px apart: 30px row + 8px
+    max-width: 430px;
     margin: 0;
     padding: 0;
     list-style: none;
+    color: #000;
+    font-size: 1.125rem; // 18px
+    font-weight: 500;
+    line-height: 1;
 
     &__item {
-      display: flex;
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.25rem 0;
+      height: 30px;
+      padding: 2px 0; // the 4px side inset is made by the cells (subgrid rows ignore side padding)
+      border-radius: 8px;
+      transition: background-color 300ms ease-out;
+
+      &:hover {
+        background-color: #faf0e6;
+      }
+
+      // Edit mode: the row grows to fit the input fields; text and icons stay at the top.
+      &--editing {
+        grid-template-columns: auto 1fr 19px 19px; // own columns: the fields are wider than the amount column
+        column-gap: 15px;
+        align-items: start;
+        height: auto;
+        min-height: 30px;
+
+        // The fields have the cream color themselves, so the row stays transparent.
+        &:hover {
+          background-color: transparent;
+        }
+
+        .ingredient-list__name {
+          margin-top: 9px; // centers the 18px text next to the 36px fields
+        }
+
+        .ingredient-list__action {
+          margin-top: 8px;
+        }
+      }
     }
 
-    button {
+    &__amount {
+      padding-left: 18px; // 4px row inset + 14px: the bullet sits 18px from the row edge
+      white-space: nowrap;
+    }
+
+    &__amount::before,
+    &__edit-row::before {
+      content: '•';
+      display: inline-block;
+      width: 12px;
+    }
+
+    // The bullet of an edited entry belongs to the edit row.
+    &__amount--edit::before {
+      content: none;
+    }
+
+    &__edit-row {
+      display: flex;
+      align-items: center;
+    }
+
+    &__input {
+      width: 60px;
+      height: 36px;
+      padding: 0 5px 2px;
+      border: 0;
+      border-radius: 20px;
+      background-color: #faf0e6;
+      color: #000;
+      font: inherit;
+      font-size: 1.125rem;
+      line-height: 20px;
+      text-align: center;
+      appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        margin: 0;
+        appearance: none;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    &__unit {
+      margin-left: 8px;
+      background-color: #faf0e6;
+    }
+
+    // The unit list of the edited entry sits in the flow below the fields (bullet 12 + input 60 + gap 8).
+    &__menu {
+      margin: 4px 0 0;
+      padding-left: 80px;
+    }
+
+    &__name {
+      overflow-wrap: anywhere;
+    }
+
+    &__action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 19px;
+      height: 19px;
+      position: relative;
+      left: -4px; // 4px inset from the row edge
+      padding: 0;
       border: 0;
       background: none;
-      color: inherit;
-      font: inherit;
-      text-decoration: underline;
+
+      img {
+        width: 12.5px;
+        height: 13.5px;
+      }
+
+      // The check icon has its own size (14 x 10px).
+      .ingredient-list__check {
+        width: 14px;
+        height: 10px;
+      }
     }
   }
 

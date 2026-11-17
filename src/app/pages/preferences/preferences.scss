@@ -1,0 +1,31 @@
+.preferences {
+  min-height: 100svh;
+  padding: 2.5rem clamp(1.5rem, 4.45vw, 4rem) 3rem;
+  background-color: #fff;
+  color: var(--color-title);
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  &__header a {
+    display: inline-block;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    font-weight: 600;
+    text-align: center;
+  }
+}

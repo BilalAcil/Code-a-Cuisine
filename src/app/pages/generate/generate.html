@@ -66,6 +66,7 @@
               <button
                 id="ingredient-unit"
                 class="ingredient-form__unit"
+                [class.ingredient-form__unit--open]="unitOpen()"
                 type="button"
                 aria-haspopup="true"
                 [attr.aria-expanded]="unitOpen()"
@@ -81,7 +82,13 @@
               </button>
               <button class="ingredient-form__add" type="submit" aria-label="Add ingredient" [disabled]="!canAdd()">
                 <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
-                  <path d="M11 5h2v14h-2z M5 11h14v2H5z" fill="currentColor" />
+                  <path
+                    d="M12 2.6v18.8M2.6 12h18.8"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -101,18 +108,101 @@
       </section>
 
       <section class="generate__card generate__card--list" aria-labelledby="ingredient-list-title">
-        <h2 class="generate__card-title" id="ingredient-list-title">List of your ingredients</h2>
+        <h2 class="generate__card-title" id="ingredient-list-title">List of your Ingredients</h2>
         <ul class="ingredient-list">
           @for (item of recipeForm.ingredients(); track $index) {
-            <li class="ingredient-list__item">
-              <span>{{ item.amount }}{{ item.unit }} {{ item.name }}</span>
-              <button type="button" [attr.aria-label]="'Remove ' + item.name" (click)="removeIngredient($index)">
-                Remove
+            <li
+              class="ingredient-list__item"
+              [class.ingredient-list__item--editing]="editingIndex() === $index"
+            >
+              @if (editingIndex() === $index) {
+                <span class="ingredient-list__amount ingredient-list__amount--edit">
+                  <span class="ingredient-list__edit-row">
+                    <input
+                      class="ingredient-list__input"
+                      type="number"
+                      min="1"
+                      max="100000"
+                      inputmode="decimal"
+                      [attr.aria-label]="'Amount of ' + item.name"
+                      [(ngModel)]="editAmount"
+                      (keydown)="onEditKeydown($event)"
+                    />
+                    <button
+                      class="ingredient-form__unit ingredient-list__unit"
+                      [class.ingredient-form__unit--open]="editUnitOpen()"
+                      type="button"
+                      aria-haspopup="true"
+                      [attr.aria-expanded]="editUnitOpen()"
+                      [attr.aria-label]="'Unit: ' + editUnitLabel()"
+                      (click)="toggleEditUnits()"
+                      (blur)="closeEditUnits()"
+                      (keydown.escape)="closeEditUnits()"
+                    >
+                      <span>{{ editUnitLabel() }}</span>
+                      <svg viewBox="0 0 10 5" width="10" height="5" aria-hidden="true" focusable="false">
+                        <path d="M0 0h10L5 5z" fill="currentColor" />
+                      </svg>
+                    </button>
+                  </span>
+                  @if (editUnitOpen()) {
+                    <ul class="ingredient-form__suggestions ingredient-form__suggestions--units ingredient-list__menu">
+                      @for (option of unitOptions; track option.value) {
+                        <li>
+                          <button
+                            type="button"
+                            (mousedown)="$event.preventDefault()"
+                            (click)="selectEditUnit(option.value)"
+                          >
+                            {{ option.label }}
+                          </button>
+                        </li>
+                      }
+                    </ul>
+                  }
+                </span>
+              } @else {
+                <span class="ingredient-list__amount">{{ formatAmount(item) }}</span>
+              }
+              <span class="ingredient-list__name">{{ item.name }}</span>
+              @if (editingIndex() === $index) {
+                <button
+                  class="ingredient-list__action"
+                  type="button"
+                  [attr.aria-label]="'Save changes to ' + item.name"
+                  [disabled]="!canSaveEdit()"
+                  (click)="saveEdit()"
+                >
+                  <img class="ingredient-list__check" src="images/icon-check.png" alt="" width="14" height="10" />
+                </button>
+              } @else {
+                <button
+                  class="ingredient-list__action"
+                  type="button"
+                  [attr.aria-label]="'Edit ' + item.name"
+                  (click)="startEditing($index)"
+                >
+                  <img src="images/icon-pen.png" alt="" width="16" height="18" />
+                </button>
+              }
+              <button
+                class="ingredient-list__action"
+                type="button"
+                [attr.aria-label]="'Remove ' + item.name"
+                (click)="removeIngredient($index)"
+              >
+                <img src="images/icon-delete.png" alt="" width="16" height="18" />
               </button>
             </li>
           }
         </ul>
       </section>
     </div>
+
+    @if (recipeForm.ingredients().length > 0) {
+      <div class="generate__actions">
+        <a class="generate__next" routerLink="/generate/preferences">Next step</a>
+      </div>
+    }
   </main>
 </div>

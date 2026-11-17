@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { INGREDIENT_SUGGESTIONS, UNIT_OPTIONS } from '../../data/ingredient-suggestions';
-import { Unit } from '../../models/recipe.models';
+import { IngredientInput, Unit } from '../../models/recipe.models';
 import { RecipeFormService } from '../../services/recipe-form';
 
 /** Amount that is preselected for every new ingredient. */
@@ -119,10 +119,107 @@ export class Generate {
   }
 
   /**
+   * Formats the amount of an ingredient for the list, e.g. "100g" or "1" for pieces.
+   * @param item The ingredient to format.
+   * @returns The amount with its unit; pieces are shown without a unit.
+   */
+  protected formatAmount(item: IngredientInput): string {
+    return item.unit === 'pcs' ? `${item.amount}` : `${item.amount}${item.unit}`;
+  }
+
+  /** Position of the list entry that is being edited, or null. */
+  protected readonly editingIndex = signal<number | null>(null);
+
+  /** Amount in the edit fields of the list entry that is being edited. */
+  protected readonly editAmount = signal<number | null>(null);
+
+  /** Unit in the edit fields of the list entry that is being edited. */
+  protected readonly editUnit = signal<Unit>('g');
+
+  /** True while the unit list of the edited entry is open. */
+  protected readonly editUnitOpen = signal(false);
+
+  /** Label of the unit selected for the edited entry. */
+  protected readonly editUnitLabel = computed(
+    () => this.unitOptions.find((option) => option.value === this.editUnit())?.label ?? '',
+  );
+
+  /** True when the edited amount is valid (0-100000). */
+  protected readonly canSaveEdit = computed(() => {
+    const amount = this.editAmount();
+    return amount !== null && amount > 0 && amount <= 100000;
+  });
+
+  /**
+   * Switches a list entry to edit mode and copies its amount and unit into the edit fields.
+   * @param index Position of the ingredient in the list.
+   */
+  protected startEditing(index: number): void {
+    const item = this.recipeForm.ingredients()[index];
+    this.editAmount.set(item.amount);
+    this.editUnit.set(item.unit);
+    this.editUnitOpen.set(false);
+    this.editingIndex.set(index);
+  }
+
+  /** Opens or closes the unit list of the edited entry. */
+  protected toggleEditUnits(): void {
+    this.editUnitOpen.update((open) => !open);
+  }
+
+  /** Closes the unit list of the edited entry. */
+  protected closeEditUnits(): void {
+    this.editUnitOpen.set(false);
+  }
+
+  /**
+   * Selects a unit for the edited entry and closes the list.
+   * @param unit The chosen unit.
+   */
+  protected selectEditUnit(unit: Unit): void {
+    this.editUnit.set(unit);
+    this.editUnitOpen.set(false);
+  }
+
+  /** Saves the edited amount and unit and leaves edit mode. */
+  protected saveEdit(): void {
+    const index = this.editingIndex();
+    if (index === null || !this.canSaveEdit()) return;
+    const item = this.recipeForm.ingredients()[index];
+    this.recipeForm.updateIngredient(index, {
+      ...item,
+      amount: this.editAmount() as number,
+      unit: this.editUnit(),
+    });
+    this.cancelEdit();
+  }
+
+  /** Leaves edit mode without saving. */
+  protected cancelEdit(): void {
+    this.editingIndex.set(null);
+    this.editUnitOpen.set(false);
+  }
+
+  /**
+   * Keyboard handling in the edit amount field: Enter saves, Escape cancels, invalid characters are blocked.
+   * @param event The keyboard event.
+   */
+  protected onEditKeydown(event: KeyboardEvent): void {
+    this.blockInvalidKeys(event);
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.saveEdit();
+    } else if (event.key === 'Escape') {
+      this.cancelEdit();
+    }
+  }
+
+  /**
    * Removes an ingredient from the list.
    * @param index Position of the ingredient in the list.
    */
   protected removeIngredient(index: number): void {
+    this.cancelEdit();
     this.recipeForm.removeIngredient(index);
   }
 }

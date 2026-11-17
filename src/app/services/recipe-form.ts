@@ -16,6 +16,15 @@ export class RecipeFormService {
   }
 
   /**
+   * Replaces the ingredient at the given position.
+   * @param index Position in the list.
+   * @param ingredient The changed ingredient.
+   */
+  updateIngredient(index: number, ingredient: IngredientInput): void {
+    this.ingredients.update((list) => list.map((item, i) => (i === index ? ingredient : item)));
+  }
+
+  /**
    * Removes the ingredient at the given position.
    * @param index Position in the list.
    */
