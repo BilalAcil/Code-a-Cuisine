@@ -4,6 +4,12 @@
   background-color: #fff;
   color: var(--color-title);
 
+  // The logo stays inside the 1440px content width, like on the start page.
+  &__header {
+    max-width: 1440px;
+    margin-inline: auto;
+  }
+
   &__header a {
     display: inline-block;
   }

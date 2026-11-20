@@ -3,10 +3,142 @@
     <a routerLink="/" aria-label="Code à Cuisine, home">
       <img src="images/logo-green.png" alt="Code à Cuisine" width="142" height="48" />
     </a>
-    <a class="preferences__back" routerLink="/generate">&larr; Ingredients</a>
+    <a class="preferences__back" routerLink="/generate">
+      <img src="images/icon-arrow.png" alt="" width="20" height="14" />
+      Ingredients
+    </a>
   </header>
 
   <main class="preferences__main">
     <h1 class="preferences__title">Choose your preferences</h1>
+
+    <div class="preferences__counters">
+      <div class="preferences__counter">
+        <p id="portions-label">How many portions you need?</p>
+        <div class="preferences__control" role="group" aria-labelledby="portions-label">
+          <button
+            class="preferences__step"
+            type="button"
+            aria-label="Fewer portions"
+            [disabled]="recipeForm.portions() <= minPortions"
+            (click)="changePortions(-1)"
+          >
+            <img src="images/icon-minus.png" alt="" width="20" height="20" />
+          </button>
+          <span class="preferences__value">
+            <span class="preferences__number">{{ recipeForm.portions() }}</span>
+            {{ recipeForm.portions() === 1 ? 'Portion' : 'Portions' }}
+          </span>
+          <button
+            class="preferences__step"
+            type="button"
+            aria-label="More portions"
+            [disabled]="recipeForm.portions() >= maxPortions"
+            (click)="changePortions(1)"
+          >
+            <img src="images/icon-plus.png" alt="" width="20" height="20" />
+          </button>
+        </div>
+      </div>
+
+      <div class="preferences__counter">
+        <p id="helpers-label">How many are cooking?</p>
+        <div class="preferences__control" role="group" aria-labelledby="helpers-label">
+          <button
+            class="preferences__step"
+            type="button"
+            aria-label="Fewer people cooking"
+            [disabled]="recipeForm.helpers() <= minHelpers"
+            (click)="changeHelpers(-1)"
+          >
+            <img src="images/icon-minus.png" alt="" width="20" height="20" />
+          </button>
+          <span class="preferences__value">
+            <span class="preferences__number">{{ recipeForm.helpers() }}</span>
+            {{ recipeForm.helpers() === 1 ? 'Person' : 'People' }}
+          </span>
+          <button
+            class="preferences__step"
+            type="button"
+            aria-label="More people cooking"
+            [disabled]="recipeForm.helpers() >= maxHelpers"
+            (click)="changeHelpers(1)"
+          >
+            <img src="images/icon-plus.png" alt="" width="20" height="20" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <section class="preferences__card" aria-label="Cooking time, cuisine and diet">
+      <div class="preferences__time" role="group" aria-labelledby="time-heading">
+        <h2 class="preferences__heading" id="time-heading">
+          <img src="images/icon-clock.png" alt="" width="20" height="20" />
+          Cooking time
+        </h2>
+        <div class="preferences__options">
+          @for (option of timeOptions; track option.value) {
+            <div class="preferences__option">
+              <label class="preferences__pill preferences__pill--{{ option.value }}">
+                <input
+                  class="preferences__radio"
+                  type="radio"
+                  name="time"
+                  [value]="option.value"
+                  [checked]="recipeForm.timeCategory() === option.value"
+                  (change)="recipeForm.timeCategory.set(option.value)"
+                />
+                {{ option.label }}
+              </label>
+              <span class="preferences__hint">{{ option.hint }}</span>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="preferences__cuisine" role="group" aria-labelledby="cuisine-heading">
+        <h2 class="preferences__heading" id="cuisine-heading">
+          <img src="images/icon-globe.png" alt="" width="20" height="20" />
+          Cuisine
+        </h2>
+        <div class="preferences__options preferences__options--wrap">
+          @for (option of cuisineOptions; track option.value) {
+            <label class="preferences__pill preferences__pill--text">
+              <input
+                class="preferences__radio"
+                type="radio"
+                name="cuisine"
+                [value]="option.value"
+                [checked]="recipeForm.cuisine() === option.value"
+                (change)="recipeForm.cuisine.set(option.value)"
+              />
+              {{ option.label }}
+            </label>
+          }
+        </div>
+      </div>
+      <div class="preferences__diet" role="group" aria-labelledby="diet-heading">
+        <h2 class="preferences__heading" id="diet-heading">
+          <img class="preferences__heading-icon--cutlery" src="images/icon-cutlery.png" alt="" width="18" height="20" />
+          Diet preferences
+        </h2>
+        <div class="preferences__options preferences__options--wrap">
+          @for (option of dietOptions; track option.value) {
+            <label class="preferences__pill preferences__pill--text">
+              <input
+                class="preferences__radio"
+                type="radio"
+                name="diet"
+                [value]="option.value"
+                [checked]="recipeForm.diet() === option.value"
+                (change)="recipeForm.diet.set(option.value)"
+              />
+              {{ option.label }}
+            </label>
+          }
+        </div>
+      </div>
+    </section>
+
+    <button class="preferences__generate" type="button">Generate a recipe</button>
   </main>
 </div>

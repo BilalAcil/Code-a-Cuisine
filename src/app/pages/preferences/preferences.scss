@@ -1,30 +1,305 @@
 .preferences {
   min-height: 100svh;
-  padding: 2.5rem clamp(1.5rem, 4.45vw, 4rem) 3rem;
+  padding: 0 clamp(1.5rem, 4.45vw, 4rem) 3rem;
   background-color: #fff;
   color: var(--color-title);
 
+  // The header is 200px tall, so the main content (the title) starts 200px from the top of the page.
   &__header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 2rem;
+    max-width: 1440px; // the logo stays inside the 1440px content width, like on the start page
+    height: 200px;
+    margin-inline: auto;
+    padding-top: 2.5rem;
+    padding-left: 4.25rem;
   }
 
   &__header a {
     display: inline-block;
   }
 
+  // Back link: arrow (20px wide) + text, no underline.
+  // Selector is as specific as the header link rule above, so display: flex wins.
+  &__header &__back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1e5515;
+    font-size: 0.875rem; // 14px
+    font-weight: 500;
+    line-height: 10px;
+    text-decoration: none;
+    cursor: pointer;
+
+    img {
+      width: 20px;
+      height: auto;
+    }
+  }
+
   &__main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 2rem;
+  }
+
+  // Portions and helpers: two blocks side by side, 56px below the title.
+  &__counters {
+    display: flex;
+    justify-content: center;
+    gap: 120px;
+    width: 720px;
+    max-width: 100%;
+    height: 70px;
+    margin-top: 56px;
+  }
+
+  // Question on top, control (minus, value, plus) below: 20px + 22px gap + 28px = 70px.
+  &__counter {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  &__control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+    height: 28px;
+    color: #10310b;
+  }
+
+  // Card with cooking time, cuisine and diet, 32px below the counters.
+  &__card {
+    width: 720px;
+    max-width: 100%;
+    min-height: 412px;
+    margin-top: 32px;
+    padding: 32px 24px;
+    border-radius: 20px;
+    background-color: #39603933;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  &__time {
+    width: 335px;
+    max-width: 100%;
+    height: 105px;
+  }
+
+  &__cuisine {
+    width: 672px;
+    max-width: 100%;
+    height: 82px;
+  }
+
+  &__diet {
+    width: 510px;
+    max-width: 100%;
+    height: 82px;
+  }
+
+  // Row of option pills under a heading, 24px below it.
+  &__options {
+    display: flex;
+    justify-content: space-between;
+    width: 335px;
+    max-width: 100%;
+    height: 50px;
+    margin-top: 24px;
+  }
+
+  // A pill with its time hint below it (28px pill + 12px gap + 10px text = 50px).
+  &__option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__hint {
+    color: #1e5515;
+    font-size: 0.875rem; // 14px
+    font-weight: 500;
+    line-height: 10px;
+    white-space: nowrap;
+  }
+
+  // Cuisine and diet: pills have the width of their text and wrap if needed.
+  &__options--wrap {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    height: auto;
+  }
+
+  &__pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background-color: #faf0e6;
+    color: #1e5515;
+    cursor: pointer;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+
+    &--quick {
+      width: 82px;
+    }
+
+    &--medium {
+      width: 102px;
+    }
+
+    &--elaborate {
+      width: 110px;
+    }
+
+    &--text {
+      padding: 4px 12px;
+    }
+
+    &:hover {
+      background-color: #fae0c6;
+    }
+
+    // The selected pill is filled with the button green (placeholder until the design is known).
+    &:has(input:checked) {
+      background-color: #396039;
+      color: #faf0e6;
+    }
+
+    &:has(input:focus-visible) {
+      outline: 3px solid #396039;
+      outline-offset: 2px;
+    }
+  }
+
+  // The real radio button stays in the page for keyboard and screen reader users but is not visible.
+  &__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  // Section headings: icon + text. The icon box is 24 x 24px (20px icon + 2px padding).
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    color: #10310b;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: 1;
+
+    img {
+      box-sizing: content-box;
+      width: 20px;
+      height: 20px;
+      padding: 2px;
+    }
+
+    // The cutlery icon is 18 x 20px with 2px 3px padding.
+    .preferences__heading-icon--cutlery {
+      width: 18px;
+      padding: 2px 3px;
+    }
+  }
+
+  // Main button below the card, 56px away from it.
+  &__generate {
+    width: 258px;
+    height: 62px;
+    margin-top: 56px;
+    padding: 16px 26px;
+    border: 0;
+    background-color: #396039;
+    color: #faf0e6;
+    font: inherit;
+    font-size: 1.5rem; // 24px
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 300ms ease-out, color 300ms ease-out;
+
+    &:hover {
+      background-color: #055e05;
+      color: #fff;
+    }
+  }
+
+  // Number and text between minus and plus.
+  &__value {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  // Number with its own background. min-width: grows for two digits (e.g. 12).
+  &__number {
+    min-width: 22px;
+    height: 20px;
+    padding: 0 5px 1px;
+    background-color: #39603933;
+    text-align: center;
+  }
+
+  // 20px icon + 4px padding on each side = 28px, same height as the control.
+  &__step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    transition: background-color 300ms ease-out;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: #e7ece7;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+  }
+
+  &__counter p {
+    margin: 0;
+    color: #10310b;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
   }
 
   &__title {
     margin: 0;
-    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    color: #10310b;
+    font-size: clamp(1.5rem, 1.95vw, 1.75rem); // 28px at 1440px and wider
     font-weight: 600;
     text-align: center;
   }

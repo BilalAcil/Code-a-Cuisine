@@ -1,18 +1,29 @@
 // Breakpoints (from the design): widescreen layout starts at 1440px, mobile layout up to 768px.
 $bp-wide: 1440px;
 $bp-mobile: 768px;
-$bp-widescreen: $bp-wide + 1px; // first width that is wider than the 1440px desktop design
 
 // Overlap between stacked plates, as a share of the plate size.
 $plate-overlap: 0.35;
 
+// The page behind the hero is green as well and the hero sits in the vertical middle, so the start
+// page also looks good on very tall screens. The host clips the plates at the window edges.
+:host {
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
+  overflow: hidden;
+  background-color: var(--color-green);
+}
+
 .hero {
-  --hero-height: max(100svh, 640px);
-  --plate-size: min(480px, 38vw); // 480px design size, shrinks on narrow desktops
+  width: 100%;
+  --hero-height: min(max(100svh, 640px), 1440px); // window height, at least 640px and at most 1440px
+  // Plates are always 480px (only narrower on small desktop windows). The column of 5 plates runs
+  // down as far as it needs to; the host clips it at the edge of the window.
+  --plate-size: min(480px, 38vw);
 
   position: relative;
   height: var(--hero-height);
-  overflow: hidden;
   background-color: var(--color-green);
   color: var(--color-cream);
 
@@ -24,10 +35,9 @@ $plate-overlap: 0.35;
     max-width: $bp-wide;
     height: 100%;
     margin-inline: auto;
-    padding: 2rem clamp(1.5rem, 8.9vw, 8rem) 3rem;
-    padding-left: 4rem; // 64px
-    padding-top: 5.5rem; // 88px
-    padding-bottom: 7.875rem; // 126px
+    padding: 2.5rem clamp(1.5rem, 8.9vw, 8rem) 3rem;
+    padding: 2.5rem 4.25rem;
+    padding-bottom: 8rem;
   }
 
   &__header,
@@ -39,6 +49,13 @@ $plate-overlap: 0.35;
 
   &__header a {
     display: inline-block;
+  }
+
+  // The intro sits 240px (15rem) from the top of the hero, independent of the header height.
+  &__intro {
+    position: absolute;
+    top: 15rem;
+    left: 4.25rem; // same as the left padding of .hero__inner
   }
 
   &__eyebrow {
@@ -126,7 +143,7 @@ $plate-overlap: 0.35;
 
   &__plates {
     position: absolute;
-    top: -30px;
+    top: calc(var(--plate-size) * -0.0625); // -30px at 480px
     right: 3%;
     z-index: 0;
     display: flex;
@@ -145,29 +162,11 @@ $plate-overlap: 0.35;
     &+& {
       margin-top: calc(var(--plate-size) * -#{$plate-overlap});
     }
-
-    &--4,
-    &--5 {
-      display: none;
-    }
   }
 
   a:focus-visible {
     outline: 3px solid var(--color-cream);
     outline-offset: 4px;
-  }
-}
-
-// Widescreen (wider than the 1440px desktop design): five smaller plates fill the full height;
-// content keeps its 1440px width.
-@media (min-width: $bp-widescreen) {
-  .hero {
-    --plate-size: calc(var(--hero-height) * 0.3);
-
-    &__plate--4,
-    &__plate--5 {
-      display: block;
-    }
   }
 }
 
@@ -181,7 +180,14 @@ $plate-overlap: 0.35;
     }
 
     &__plates {
+      top: -30px;
       right: calc(var(--plate-size) * -0.55);
+    }
+
+    // Mobile keeps three plates for now.
+    &__plate--4,
+    &__plate--5 {
+      display: none;
     }
 
     &__intro,
@@ -189,13 +195,19 @@ $plate-overlap: 0.35;
       max-width: 62%;
     }
 
+    &__intro {
+      left: 1.5rem; // same as the left padding of .hero__inner on mobile
+    }
+
     &__title {
       margin-bottom: 2rem;
     }
   }
 }
+
 @each $name in odd, even {
   @keyframes arrow-reappear-#{$name} {
+
     0%,
     30% {
       opacity: 0;

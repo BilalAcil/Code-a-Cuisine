@@ -1,11 +1,26 @@
 import { Injectable, signal } from '@angular/core';
-import { IngredientInput } from '../models/recipe.models';
+import { Cuisine, Diet, IngredientInput, TimeCategory } from '../models/recipe.models';
 
 /** Holds the user's input across all steps of the recipe generator. */
 @Injectable({ providedIn: 'root' })
 export class RecipeFormService {
   /** Ingredients entered so far. The most recently added one is first. */
   readonly ingredients = signal<IngredientInput[]>([]);
+
+  /** Number of portions, 1 to 12. */
+  readonly portions = signal(2);
+
+  /** Number of people who cook, 1 to 3. */
+  readonly helpers = signal(1);
+
+  /** Chosen time category, or null while nothing is chosen. */
+  readonly timeCategory = signal<TimeCategory | null>(null);
+
+  /** Chosen cooking style, or null while nothing is chosen. */
+  readonly cuisine = signal<Cuisine | null>(null);
+
+  /** Chosen diet, or null while nothing is chosen. */
+  readonly diet = signal<Diet | null>(null);
 
   /**
    * Adds an ingredient to the top of the list.
