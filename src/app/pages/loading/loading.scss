@@ -1,0 +1,350 @@
+// The animation plays once and then stays in its final picture (animation-fill-mode: both).
+// Timeline of the 8s animation:
+//   1. bowl slides in from the left (0% - 12%)
+//   2. ingredients come in one after another: lettuce, carrot, lemon, leaf (14% - 50%)
+//   3. seasoning with the pepper mill and the salt shaker (54% - 74%)
+//   4. wooden spoon falls into the bowl and stays there (76% - 86%)
+$duration: 8s;
+
+.loading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  background-color: var(--color-green);
+  color: var(--color-cream);
+
+  // Logo in the top left corner, inside the 1440px content width like on the start page.
+  &__header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding: 2.5rem clamp(1.5rem, 4.45vw, 4.25rem) 0;
+  }
+
+  &__header a {
+    display: inline-block;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px; // distance between the card and the text
+  }
+
+  &__card {
+    position: relative;
+    width: 255px;
+    height: 310px;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: #c4d0c4;
+  }
+
+  &__text {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 3.34vw, 3rem); // 48px at 1440px and wider
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  // The three dots disappear one by one and then come back in the same order. This keeps going
+  // for as long as the page is shown.
+  &__dots span {
+    animation: dot-blink 2.4s infinite;
+
+    @for $i from 1 through 3 {
+      &:nth-child(#{$i}) {
+        animation-delay: ($i - 1) * 0.24s;
+      }
+    }
+  }
+
+  // ---- Illustration: every item is placed at its final position; the animation moves it in. ----
+  &__item {
+    position: absolute;
+    max-width: none;
+    animation-duration: $duration;
+    animation-timing-function: ease-out;
+    animation-fill-mode: both;
+  }
+
+  &__bowl-back {
+    z-index: 1;
+    top: 190px;
+    left: 62px;
+    animation-name: bowl-in;
+  }
+
+  &__lettuce {
+    z-index: 2;
+    top: 162px;
+    left: 78px;
+    animation-name: lettuce-in;
+  }
+
+  &__carrot {
+    z-index: 3;
+    top: 190px;
+    left: 126px;
+    transform: rotate(-35deg);
+    animation-name: carrot-in;
+  }
+
+  &__lemon {
+    z-index: 3;
+    top: 190px;
+    left: 84px;
+    animation-name: lemon-in;
+  }
+
+  &__leaf {
+    z-index: 3;
+    top: 154px;
+    left: 112px;
+    transform: rotate(-12deg);
+    animation-name: leaf-in;
+  }
+
+  &__mill {
+    z-index: 5;
+    top: 56px;
+    left: 56px;
+    animation-name: mill-sprinkle;
+    animation-timing-function: ease-in-out;
+  }
+
+  &__shaker {
+    z-index: 5;
+    top: 76px;
+    left: 160px;
+    animation-name: shaker-sprinkle;
+    animation-timing-function: ease-in-out;
+  }
+
+  &__spices {
+    z-index: 5;
+    top: 138px;
+    opacity: 0;
+    animation-name: spices-fall;
+    animation-timing-function: ease-in;
+
+    &--pepper {
+      left: 58px;
+    }
+
+    &--salt {
+      left: 162px;
+    }
+  }
+
+  // The spoon is behind the front of the bowl, so its scoop sits inside the bowl.
+  // The spoon stands in the bowl, leaning 35 degrees to the right. It turns around the middle of its
+  // scoop (transform-origin), so top/left place the scoop at the height of the lemon.
+  &__spoon {
+    z-index: 3;
+    top: 189px;
+    left: 120px;
+    transform-origin: 20px 24px;
+    transform: rotate(-47deg); // handle up (-82deg) + 35deg to the right
+    animation-name: spoon-in;
+    animation-timing-function: ease-in;
+  }
+
+  &__bowl-front {
+    z-index: 4;
+    top: 190px;
+    left: 62px;
+    animation-name: bowl-in;
+  }
+}
+
+// ---- Keyframes (percentages of the 8s animation) ----
+
+// 1. The bowl slides in from the left, outside of the card, to the middle.
+@keyframes bowl-in {
+  0% {
+    transform: translateX(-300px);
+  }
+
+  12%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+// 2. Ingredients come in from outside of the card.
+@keyframes lettuce-in {
+  0%,
+  14% {
+    transform: translateY(-260px) rotate(-20deg);
+  }
+
+  22%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes carrot-in {
+  0%,
+  24% {
+    transform: translate(150px, -170px) rotate(25deg);
+  }
+
+  32%,
+  100% {
+    transform: rotate(-35deg);
+  }
+}
+
+@keyframes lemon-in {
+  0%,
+  34% {
+    transform: translate(-170px, -80px) rotate(-120deg);
+  }
+
+  42%,
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes leaf-in {
+  0%,
+  44% {
+    transform: translate(0, -230px) rotate(40deg);
+  }
+
+  50%,
+  100% {
+    transform: rotate(-12deg);
+  }
+}
+
+// 3. Seasoning: the pepper mill comes in from the left, turns upside down, and leaves again.
+@keyframes mill-sprinkle {
+  0%,
+  54% {
+    transform: translate(-110px, 0) rotate(0);
+  }
+
+  59% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  61%,
+  68% {
+    transform: translate(0, 0) rotate(150deg);
+  }
+
+  70% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  74%,
+  100% {
+    transform: translate(-110px, 0) rotate(0);
+  }
+}
+
+// The salt shaker does the same from the right.
+@keyframes shaker-sprinkle {
+  0%,
+  56% {
+    transform: translate(110px, 0) rotate(0);
+  }
+
+  61% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  63%,
+  70% {
+    transform: translate(0, 0) rotate(-150deg);
+  }
+
+  72% {
+    transform: translate(0, 0) rotate(0);
+  }
+
+  76%,
+  100% {
+    transform: translate(110px, 0) rotate(0);
+  }
+}
+
+// Seasoning dots fall into the bowl while the mill and the shaker are turned.
+@keyframes spices-fall {
+  0%,
+  61% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  63% {
+    opacity: 1;
+  }
+
+  69% {
+    opacity: 1;
+    transform: translateY(40px);
+  }
+
+  71%,
+  100% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+// 4. The wooden spoon falls into the bowl from above, already leaning to the right, and stays there.
+@keyframes spoon-in {
+  0%,
+  76% {
+    transform: translateY(-300px) rotate(-47deg);
+  }
+
+  86%,
+  100% {
+    transform: rotate(-47deg);
+  }
+}
+
+// One dot is visible, then hidden for a while, then visible again.
+@keyframes dot-blink {
+  0%,
+  9% {
+    opacity: 1;
+  }
+
+  10%,
+  59% {
+    opacity: 0;
+  }
+
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+
+// No movement for people who prefer reduced motion: the bowl shows the finished picture.
+@media (prefers-reduced-motion: reduce) {
+  .loading__item,
+  .loading__dots span {
+    animation: none;
+  }
+
+  .loading__mill,
+  .loading__shaker,
+  .loading__spices {
+    display: none;
+  }
+}

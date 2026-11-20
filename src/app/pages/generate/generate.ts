@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { InfoDialog } from '../../components/info-dialog/info-dialog';
 import { INGREDIENT_SUGGESTIONS, UNIT_OPTIONS } from '../../data/ingredient-suggestions';
 import { IngredientInput, Unit } from '../../models/recipe.models';
 import { RecipeFormService } from '../../services/recipe-form';
@@ -11,7 +12,7 @@ const DEFAULT_AMOUNT = 100;
 /** Step 1 of the generator: the user enters the ingredients they have. */
 @Component({
   selector: 'app-generate',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, InfoDialog],
   templateUrl: './generate.html',
   styleUrl: './generate.scss',
 })
@@ -38,6 +39,9 @@ export class Generate {
   protected readonly unitLabel = computed(
     () => this.unitOptions.find((option) => option.value === this.unit())?.label ?? '',
   );
+
+  /** Name of the ingredient for which the "different units" pop-up is shown, or null. */
+  protected readonly unitConflictName = signal<string | null>(null);
 
   /** True while the ingredient input has focus. */
   protected readonly focused = signal(false);
@@ -106,14 +110,22 @@ export class Generate {
     if (['e', 'E', '+', '-'].includes(event.key)) event.preventDefault();
   }
 
-  /** Adds the entered ingredient to the list and clears the input fields. */
+  /**
+   * Adds the entered ingredient to the list and clears the input fields. An ingredient that is
+   * already in the list is added up; with a different unit the pop-up is shown and the input stays.
+   */
   protected addIngredient(): void {
     if (!this.canAdd()) return;
-    this.recipeForm.addIngredient({
-      name: this.name().trim(),
+    const name = this.name().trim();
+    const result = this.recipeForm.addIngredient({
+      name,
       amount: this.amount() as number,
       unit: this.unit(),
     });
+    if (result === 'unit-conflict') {
+      this.unitConflictName.set(name);
+      return;
+    }
     this.name.set('');
     this.amount.set(DEFAULT_AMOUNT);
   }

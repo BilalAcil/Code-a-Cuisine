@@ -139,6 +139,15 @@
       </div>
     </section>
 
-    <button class="preferences__generate" type="button">Generate a recipe</button>
+    <button class="preferences__generate" type="button" (click)="generate()">Generate a recipe</button>
   </main>
+
+  <app-info-dialog
+    [open]="showNotEnough()"
+    heading="Ups! Not quite enough..."
+    message="It looks like some ingredient quantities aren't sufficient for your selected servings. Please add or adjust quantities and try again."
+    actionLabel="Go back to ingredients"
+    actionLink="/generate"
+    (closed)="showNotEnough.set(false)"
+  />
 </div>

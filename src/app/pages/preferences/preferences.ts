@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { InfoDialog } from '../../components/info-dialog/info-dialog';
 import { Cuisine, Diet, TimeCategory } from '../../models/recipe.models';
 import { RecipeFormService } from '../../services/recipe-form';
 
@@ -14,7 +15,7 @@ const MAX_HELPERS = 3;
 /** Step 2 of the generator: the user chooses portions, helpers, time, cuisine and diet. */
 @Component({
   selector: 'app-preferences',
-  imports: [RouterLink],
+  imports: [RouterLink, InfoDialog],
   templateUrl: './preferences.html',
   styleUrl: './preferences.scss',
 })
@@ -45,10 +46,26 @@ export class Preferences {
   ];
 
   protected readonly recipeForm = inject(RecipeFormService);
+  private readonly router = inject(Router);
+
+  /** True while the "not quite enough" pop-up is shown. */
+  protected readonly showNotEnough = signal(false);
   protected readonly minPortions = MIN_PORTIONS;
   protected readonly maxPortions = MAX_PORTIONS;
   protected readonly minHelpers = MIN_HELPERS;
   protected readonly maxHelpers = MAX_HELPERS;
+
+  /**
+   * Starts the recipe generation and shows the loading page. If the ingredients are not enough
+   * for the chosen portions, the pop-up is shown instead.
+   */
+  protected generate(): void {
+    if (!this.recipeForm.hasEnoughIngredients()) {
+      this.showNotEnough.set(true);
+      return;
+    }
+    this.router.navigate(['/loading']);
+  }
 
   /**
    * Changes the number of portions by the given step, within the allowed range.

@@ -1,0 +1,138 @@
+// The <dialog> itself has no padding, so a click on its own surface can only be a click on the dark
+// background. The padding sits on the inner box.
+.info-dialog {
+  width: 570px;
+  max-width: calc(100vw - 2rem);
+  height: 345px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 30px;
+  background-color: #396039;
+  color: #faf0e6;
+
+  // Dark background behind the pop-up (#0C2100 at 40%).
+  &::backdrop {
+    background-color: rgb(12 33 0 / 0.4);
+  }
+
+  // The pop-up moves in from above (400ms, constant speed).
+  &[open] {
+    animation: info-dialog-in 400ms linear;
+
+    &::backdrop {
+      animation: info-dialog-fade 400ms linear;
+    }
+  }
+
+  // The content block is centered in the pop-up, so the space above and below it is the same.
+  &__box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 64px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 440px;
+    max-width: 100%;
+    height: 238px;
+  }
+
+  // The X button is on top at the right edge, the title sits directly below it without a gap.
+  &__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &__title {
+    align-self: flex-start;
+    margin: 0;
+    font-size: 1.75rem; // 28px
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  // 14px icon + 5px padding on each side = 24px.
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 5px;
+    border: 0;
+    background: none;
+  }
+
+  &__text {
+    margin: 24px 0;
+    font-size: 1.125rem; // 18px
+    font-weight: 600;
+    line-height: 26px;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 300px;
+    max-width: 100%;
+    height: 50px;
+    padding: 16px 26px;
+    border: 0;
+    border-radius: 5px;
+    background: none; // the action may be a <button>
+    color: #faf0e6;
+    font-family: inherit;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
+    text-decoration: none;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: #fae0c633;
+    }
+
+    img {
+      width: 24px;
+      height: auto;
+    }
+  }
+}
+
+@keyframes info-dialog-in {
+  from {
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes info-dialog-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-dialog[open],
+  .info-dialog[open]::backdrop {
+    animation: none;
+  }
+}

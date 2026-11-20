@@ -1,0 +1,32 @@
+<dialog
+  #dialog
+  class="info-dialog"
+  aria-labelledby="info-dialog-title"
+  (close)="onClose()"
+  (click)="onBackdropClick($event)"
+>
+  <div class="info-dialog__box">
+    <div class="info-dialog__content">
+      <div class="info-dialog__head">
+        <button class="info-dialog__close" type="button" aria-label="Close" (click)="close()">
+          <img src="images/icon-close.png" alt="" width="14" height="14" />
+        </button>
+        <h2 class="info-dialog__title" id="info-dialog-title">{{ heading() }}</h2>
+      </div>
+
+      <p class="info-dialog__text">{{ message() }}</p>
+
+      @if (actionLink(); as link) {
+        <a class="info-dialog__link" [routerLink]="link">
+          {{ actionLabel() }}
+          <img src="images/icon-arrow-cream.png" alt="" width="24" height="14" />
+        </a>
+      } @else {
+        <button class="info-dialog__link" type="button" (click)="close()">
+          {{ actionLabel() }}
+          <img src="images/icon-arrow-cream.png" alt="" width="24" height="14" />
+        </button>
+      }
+    </div>
+  </div>
+</dialog>

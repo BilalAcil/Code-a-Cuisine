@@ -20,6 +20,17 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/preferences/preferences').then((m) => m.Preferences),
   },
   {
+    path: 'loading',
+    title: 'Generating | Code à Cuisine',
+    canActivate: [ingredientsGuard],
+    loadComponent: () => import('./pages/loading/loading').then((m) => m.Loading),
+  },
+  {
+    path: 'results',
+    title: 'Your recipes | Code à Cuisine',
+    loadComponent: () => import('./pages/results/results').then((m) => m.Results),
+  },
+  {
     path: 'cookbook',
     title: 'Cookbook | Code à Cuisine',
     loadComponent: () => import('./pages/cookbook/cookbook').then((m) => m.Cookbook),

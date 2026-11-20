@@ -176,10 +176,9 @@
       background-color: #fae0c6;
     }
 
-    // The selected pill is filled with the button green (placeholder until the design is known).
+    // The selected pill gets a light green background; the text color stays the same.
     &:has(input:checked) {
-      background-color: #396039;
-      color: #faf0e6;
+      background-color: #39603933;
     }
 
     &:has(input:focus-visible) {

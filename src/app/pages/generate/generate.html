@@ -205,4 +205,12 @@
       </div>
     }
   </main>
+
+  <app-info-dialog
+    [open]="unitConflictName() !== null"
+    heading="Ups! Different units..."
+    [message]="unitConflictName() + ' is already in your list with a different unit. Please use the same unit or remove the entry from the list first.'"
+    actionLabel="Got it"
+    (closed)="unitConflictName.set(null)"
+  />
 </div>
