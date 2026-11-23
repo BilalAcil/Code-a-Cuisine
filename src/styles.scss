@@ -57,3 +57,34 @@ img {
 a {
   color: inherit;
 }
+
+/* Arrow blink (see ArrowBlink directive): the arrow disappears for a moment and fades back in. */
+[data-arrow-blink='odd'] img {
+  animation: arrow-reappear-odd 800ms ease-out;
+}
+
+[data-arrow-blink='even'] img {
+  animation: arrow-reappear-even 800ms ease-out;
+}
+
+@keyframes arrow-reappear-odd {
+  0%,
+  30% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes arrow-reappear-even {
+  0%,
+  30% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

@@ -17,12 +17,12 @@
       <p class="info-dialog__text">{{ message() }}</p>
 
       @if (actionLink(); as link) {
-        <a class="info-dialog__link" [routerLink]="link">
+        <a class="info-dialog__link" [routerLink]="link" appArrowBlink>
           {{ actionLabel() }}
           <img src="images/icon-arrow-cream.png" alt="" width="24" height="14" />
         </a>
       } @else {
-        <button class="info-dialog__link" type="button" (click)="close()">
+        <button class="info-dialog__link" type="button" appArrowBlink (click)="close()">
           {{ actionLabel() }}
           <img src="images/icon-arrow-cream.png" alt="" width="24" height="14" />
         </button>

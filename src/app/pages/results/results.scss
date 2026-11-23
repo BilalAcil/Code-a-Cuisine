@@ -1,3 +1,208 @@
+// Like the start page: the page behind the content is green, the content is at most 1440px wide.
+:host {
+  display: block;
+  min-height: 100svh;
+  background-color: var(--color-green);
+}
+
 .results {
-  padding: 2rem clamp(1.5rem, 8.9vw, 8rem);
+  min-height: 100svh;
+  color: var(--color-cream);
+
+  // Logo in the top left corner, at the same place as on the start page (2.5rem from the top,
+  // 4.25rem from the left).
+  &__header {
+    max-width: 1440px;
+    margin-inline: auto;
+    padding: 2.5rem 4.25rem 0;
+  }
+
+  &__header a {
+    display: inline-block;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-bottom: 4rem;
+  }
+
+  // Introduction: text on the left, picture on the right, 96px between them.
+  &__intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 96px;
+    width: 100%;
+    height: 222px;
+    margin-top: 4rem;
+  }
+
+  &__intro-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+    width: 610px;
+    height: 206px;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 3.375rem; // 54px
+    font-weight: 600;
+    line-height: 65px;
+  }
+
+  &__lead {
+    margin: 0;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  // The three recipe cards: 3 x 410px + 2 x 24px gap = 1278px, in a 1280px wide row.
+  &__cards {
+    display: flex;
+    gap: 24px;
+    width: 1280px;
+    max-width: 100%;
+    height: 340px;
+    margin: 5.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 410px;
+    height: 340px;
+    padding: 32px 24px;
+    border-radius: 20px;
+    background-color: #dbe0db;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: #d7dfd7e5;
+    }
+  }
+
+  // "Recipe 1": cloche icon (40 x 28px) and text, 16px apart.
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 0;
+    color: #1e5515;
+    font-size: 1.5rem; // 24px
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &__recipe-title {
+    height: 80px;
+    margin: 16px 0;
+    color: #10310b;
+    font-size: 2rem; // 32px
+    font-weight: 600;
+    line-height: 40px; // two lines fill the 80px: the first at the top, the second at the bottom
+  }
+
+  // "Cooking time": clock icon (20 x 20px) and text.
+  &__time {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #396039;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  &__view {
+    width: 106px;
+    height: 60px;
+    margin-top: 48px;
+    border: 0;
+    background-color: #faf0e6;
+    color: #008000;
+    font: inherit;
+    font-size: 1.5rem; // 24px
+    font-weight: 600;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: #fae0c6;
+      font-weight: 700;
+    }
+  }
+
+  // "Generate new recipe" at the right edge of the card row, 48px below the cards.
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 1280px;
+    max-width: 100%;
+    margin-top: 3rem;
+  }
+
+  &__again {
+    display: flex;
+    align-items: center;
+    gap: 10px; // between the text and the arrow
+    width: 286px;
+    height: 52px;
+    padding: 16px 26px;
+    color: #faf0e6;
+    font-size: 1.25rem; // 20px
+    font-weight: 500;
+    line-height: 20px;
+    text-decoration: none;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: #fae0c633;
+    }
+
+    img {
+      width: 24px;
+      height: auto;
+    }
+  }
+
+  // Picture on the right side of the introduction.
+  &__visual {
+    flex: none;
+    width: 574px;
+    height: 222px;
+    border-radius: 20px;
+    object-fit: cover;
+  }
+
+  // The chosen cooking style and time.
+  &__choices {
+    display: flex;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__choice {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 30px;
+    background-color: #faf0e6;
+    color: #1e5515;
+    font-size: 1rem;
+    font-weight: 500;
+  }
 }

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { InfoDialog } from '../../components/info-dialog/info-dialog';
-import { Cuisine, Diet, TimeCategory } from '../../models/recipe.models';
+import { CUISINE_OPTIONS, DIET_OPTIONS, TIME_OPTIONS } from '../../data/preference-options';
 import { RecipeFormService } from '../../services/recipe-form';
 
 /** Smallest and largest allowed number of portions. */
@@ -20,30 +20,10 @@ const MAX_HELPERS = 3;
   styleUrl: './preferences.scss',
 })
 export class Preferences {
-  /** Diets offered to the user. */
-  protected readonly dietOptions: readonly { value: Diet; label: string }[] = [
-    { value: 'vegetarian', label: 'Vegetarian' },
-    { value: 'vegan', label: 'Vegan' },
-    { value: 'keto', label: 'Keto' },
-    { value: 'none', label: 'No preferences' },
-  ];
-
-  /** Cooking styles offered to the user. */
-  protected readonly cuisineOptions: readonly { value: Cuisine; label: string }[] = [
-    { value: 'german', label: 'German' },
-    { value: 'italian', label: 'Italian' },
-    { value: 'indian', label: 'Indian' },
-    { value: 'japanese', label: 'Japanese' },
-    { value: 'gourmet', label: 'Gourmet' },
-    { value: 'fusion', label: 'Fusion' },
-  ];
-
-  /** Time categories offered to the user. */
-  protected readonly timeOptions: readonly { value: TimeCategory; label: string; hint: string }[] = [
-    { value: 'quick', label: 'Quick', hint: 'up to 20 min' },
-    { value: 'medium', label: 'Medium', hint: '20-45 min' },
-    { value: 'elaborate', label: 'Complex', hint: 'over 45 min' },
-  ];
+  /** Diets, cooking styles and time categories offered to the user. */
+  protected readonly dietOptions = DIET_OPTIONS;
+  protected readonly cuisineOptions = CUISINE_OPTIONS;
+  protected readonly timeOptions = TIME_OPTIONS;
 
   protected readonly recipeForm = inject(RecipeFormService);
   private readonly router = inject(Router);

@@ -1,5 +1,56 @@
-<main class="results">
-  <a routerLink="/generate">&larr; Back to ingredients</a>
-  <h1>Your recipes</h1>
-  <p>Coming soon.</p>
-</main>
+<div class="results">
+  <header class="results__header">
+    <a routerLink="/" aria-label="Code à Cuisine, home">
+      <img src="images/logo-cream.png" alt="Code à Cuisine" width="142" height="48" />
+    </a>
+  </header>
+
+  <main class="results__main">
+    <section class="results__intro">
+      <div class="results__intro-text">
+        <h1 class="results__title">The recipe results</h1>
+        <p class="results__lead">
+          We took what you have and let our AI do the thinking.<br />
+          Here are 3 easy recipes you can make right now!
+        </p>
+        <ul class="results__choices" aria-label="Your preferences">
+          @for (choice of choices(); track choice) {
+            <li class="results__choice">{{ choice }}</li>
+          }
+        </ul>
+      </div>
+
+      <img
+        class="results__visual"
+        src="images/robot-visual.webp"
+        alt="A robot hand serves a dish under a silver cloche in a kitchen"
+        width="574"
+        height="222"
+      />
+    </section>
+
+    <ul class="results__cards" aria-label="The three recipes">
+      @for (card of cards; track card.label) {
+        <li class="results__card">
+          <p class="results__label">
+            <img src="images/icon-cloche.png" alt="" width="40" height="28" />
+            {{ card.label }}
+          </p>
+          <h2 class="results__recipe-title">{{ card.title }}</h2>
+          <p class="results__time">
+            <img src="images/icon-clock-green.png" alt="" width="20" height="20" />
+            Cooking time: {{ card.minutes }}min
+          </p>
+          <button class="results__view" type="button">View</button>
+        </li>
+      }
+    </ul>
+
+    <div class="results__actions">
+      <a class="results__again" routerLink="/generate" appArrowBlink>
+        Generate new recipe
+        <img src="images/icon-arrow-cream.png" alt="" width="24" height="14" />
+      </a>
+    </div>
+  </main>
+</div>

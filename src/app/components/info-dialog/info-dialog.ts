@@ -1,5 +1,6 @@
 import { Component, ElementRef, effect, input, output, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ArrowBlink } from '../../directives/arrow-blink';
 
 /**
  * Pop-up with a heading, a short message and one action. It is used for messages such as
@@ -10,7 +11,7 @@ import { RouterLink } from '@angular/router';
  */
 @Component({
   selector: 'app-info-dialog',
-  imports: [RouterLink],
+  imports: [RouterLink, ArrowBlink],
   templateUrl: './info-dialog.html',
   styleUrl: './info-dialog.scss',
 })
