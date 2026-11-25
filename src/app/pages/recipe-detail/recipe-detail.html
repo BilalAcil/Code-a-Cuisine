@@ -1,0 +1,63 @@
+<div class="recipe-detail">
+  <header class="recipe-detail__header">
+    <a routerLink="/" aria-label="Code à Cuisine, home">
+      <img src="images/logo-green.png" alt="Code à Cuisine" width="142" height="48" />
+    </a>
+    <a class="recipe-detail__back" [routerLink]="back().link">
+      <img src="images/icon-arrow.png" alt="" width="20" height="14" />
+      {{ back().label }}
+    </a>
+  </header>
+
+  <main class="recipe-detail__main">
+    <article class="recipe-detail__recipe">
+      <header class="recipe-detail__intro">
+        <div class="recipe-detail__intro-left">
+          <p class="recipe-detail__time">
+            <img src="images/icon-clock-green.png" alt="" width="20" height="20" />
+            Cooking time: 20min
+          </p>
+          <h1 class="recipe-detail__title">Pasta with spinach and cherry tomatoes</h1>
+          <div class="recipe-detail__persons">
+            <p>Cooking person: {{ chefs().length }}</p>
+            <ul class="recipe-detail__chefs">
+              @for (chef of chefs(); track chef.name) {
+                <li class="recipe-detail__chef" [style.background-color]="chef.color">
+                  <img [src]="chef.icon" alt="" [style.width.px]="chef.iconWidth" height="22" />
+                  {{ chef.name }}
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+
+        <div class="recipe-detail__intro-right">
+          <ul class="recipe-detail__tags">
+            @for (tag of tags(); track tag) {
+              <li class="recipe-detail__tag">{{ tag }}</li>
+            }
+            <li class="recipe-detail__tag">
+              <span class="recipe-detail__heart">
+                <img src="images/icon-heart.png" alt="Likes" width="16" height="14" />
+              </span>
+              {{ likes }}
+            </li>
+          </ul>
+
+          <p class="recipe-detail__nutrition-title">Nutritional information</p>
+
+          <dl class="recipe-detail__nutrition">
+            @for (value of nutrition; track value.name) {
+              <div class="recipe-detail__nutrient">
+                <dt>{{ value.name }}</dt>
+                <dd>{{ value.amount }}</dd>
+              </div>
+            }
+          </dl>
+        </div>
+      </header>
+    </article>
+
+    <section class="recipe-detail__cta" aria-label="Cookbook"></section>
+  </main>
+</div>

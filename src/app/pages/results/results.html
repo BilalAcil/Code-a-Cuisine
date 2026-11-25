@@ -41,7 +41,7 @@
             <img src="images/icon-clock-green.png" alt="" width="20" height="20" />
             Cooking time: {{ card.minutes }}min
           </p>
-          <button class="results__view" type="button">View</button>
+          <a class="results__view" [routerLink]="['/recipe', $index + 1]" [queryParams]="{ from: 'results' }">View</a>
         </li>
       }
     </ul>
