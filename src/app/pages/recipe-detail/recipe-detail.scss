@@ -48,7 +48,6 @@
   &__recipe {
     display: flex;
     flex-direction: column;
-    gap: 48px;
     width: 1250px;
     max-width: 100%;
     padding: 40px 48px;
@@ -57,9 +56,220 @@
     background-color: #faf0e64d;
   }
 
+  // Banner and lists together, so there is no space between them (the card has a 48px gap).
+  &__ingredients-block,
+  &__directions-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // Row that centers the two lists.
+  &__lists-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  // Ingredients of the recipe.
+  &__ingredients {
+    width: 1146px;
+    max-width: 100%;
+    height: 148px;
+    background: url('/images/banner-ingredients.webp') center / 100% 100% no-repeat;
+  }
+
+  // "Your ingredients" and "Extra ingredients", side by side and centered in the card.
+  &__lists {
+    display: flex;
+    gap: 80px;
+    width: 740px;
+    max-width: 100%;
+  }
+
+  &__list {
+    width: 330px;
+  }
+
+  &__list-title {
+    margin: 0 0 24px;
+    color: #008000;
+    font-size: 1.5rem; // 24px
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  // Bullet points: bullet, amount and name in shared columns.
+  &__items {
+    display: grid;
+    grid-template-columns: max-content max-content 1fr;
+    column-gap: 16px;
+    margin: 0;
+    padding: 0 0 0 8px; // bullets start a bit to the right of the heading
+    list-style: none;
+    color: #10310b;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: normal; // Figma shows "100%", which is the font's own line height
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    align-items: baseline;
+
+    &::before {
+      content: '•';
+    }
+
+    // An item without amount: the name starts in the amount column.
+    span:empty {
+      display: none;
+    }
+
+    span:empty+span {
+      grid-column: 2 / -1;
+    }
+  }
+
+  // Directions of the recipe (the banner picture is 4573 x 536px, so 1146 x 134px).
+  &__directions {
+    width: 1146px;
+    max-width: 100%;
+    height: 134px;
+    background: url('/images/banner-directions.webp') center / 100% 100% no-repeat;
+  }
+
+  // Text of the steps: scrolls when the text gets longer than the box. The scrollbar (8px) sits
+  // outside of the 864px of content with 16px space; the negative margin keeps the content centered.
+  // Shadow at the top edge: it only shows after scrolling, because the "local" cover (same color as
+  // the card, about #fefbf8) hides it while the text is at the top.
+  &__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 888px;
+    max-width: 100%;
+    height: 376px;
+    margin: 24px -24px 0 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:
+      linear-gradient(#fefbf8 30%, rgb(254 251 248 / 0%)) 0 0 / 100% 40px no-repeat local,
+      radial-gradient(farthest-side at 50% 0, rgb(16 49 11 / 25%), rgb(16 49 11 / 0%)) 0 0 / 100% 14px no-repeat scroll;
+
+    // Own scrollbar without arrows (Chrome, Edge, Safari).
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    // The thumb is invisible until the mouse moves over the steps or the user scrolls.
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background-color: transparent;
+      transition: background-color 700ms ease-in-out;
+    }
+
+    &--scrollbar::-webkit-scrollbar-thumb {
+      background-color: #faf0e6;
+    }
+
+    &::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    // Firefox
+    @supports not selector(::-webkit-scrollbar) {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+
+      &.recipe-detail__steps--scrollbar {
+        scrollbar-color: #faf0e6 transparent;
+      }
+    }
+  }
+
+  // Two steps next to each other.
+  &__steps-row {
+    display: flex;
+    flex: none;
+    gap: 64px;
+    width: 864px;
+  }
+
+  // Each step is exactly half of the row, also when it stands alone in the last row.
+  &__step {
+    flex: 0 0 calc((100% - 64px) / 2);
+  }
+
+  // Number circle, title and (on the far right) the chef label.
+  &__step-head {
+    display: flex;
+    align-items: center;
+  }
+
+  &__step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background-color: #faf0e6;
+    color: #10310b;
+    font-size: 1.125rem; // 18px
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__step-title {
+    margin: 0;
+    color: #10310b;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  &__step-text {
+    margin: 32px 0 0;
+    color: #10310b;
+    font-size: 1.125rem; // 18px
+    font-weight: 500;
+    line-height: normal; // Figma shows "100%", which is the font's own line height (about 1.25)
+  }
+
+  &__step-head &__chef {
+    margin: 0 0 0 auto;
+  }
+
+  // Section heading, centered in the banner.
+  &__heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    color: #1e5515;
+    font-size: 2rem; // 32px
+    font-weight: 600;
+    line-height: 1;
+
+    // In the directions banner the colored band lies lower than the middle of the picture.
+    &--directions {
+      padding-top: 25px;
+    }
+  }
+
   // Name, cooking time, tags and nutrition of the recipe.
   &__intro {
-    width: 1150px;
+    width: 1146px;
     max-width: 100%;
     height: 246px;
     padding: 24px;
@@ -72,6 +282,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 48px;
   }
 
   &__intro-right {

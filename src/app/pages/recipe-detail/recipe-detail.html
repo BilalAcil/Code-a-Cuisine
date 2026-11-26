@@ -56,6 +56,76 @@
           </dl>
         </div>
       </header>
+
+      <div class="recipe-detail__ingredients-block">
+        <section class="recipe-detail__ingredients" aria-labelledby="ingredients-title">
+          <h2 class="recipe-detail__heading" id="ingredients-title">Ingredients</h2>
+        </section>
+
+        <div class="recipe-detail__lists-row">
+          <div class="recipe-detail__lists">
+            <div class="recipe-detail__list">
+              <h3 class="recipe-detail__list-title">Your ingredients</h3>
+              <ul class="recipe-detail__items">
+                @for (item of yourIngredients; track item.name) {
+                  <li class="recipe-detail__item">
+                    <span>{{ item.amount }}</span>
+                    <span>{{ item.name }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="recipe-detail__list">
+              <h3 class="recipe-detail__list-title">Extra ingredients</h3>
+              <ul class="recipe-detail__items">
+                @for (item of extraIngredients; track item.name) {
+                  <li class="recipe-detail__item">
+                    <span>{{ item.amount }}</span>
+                    <span>{{ item.name }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-detail__directions-block">
+        <section class="recipe-detail__directions" aria-labelledby="directions-title">
+          <h2 class="recipe-detail__heading recipe-detail__heading--directions" id="directions-title">Directions</h2>
+        </section>
+
+        <div
+          class="recipe-detail__steps"
+          [class.recipe-detail__steps--scrollbar]="scrollbarVisible()"
+          tabindex="0"
+          role="region"
+          aria-label="Cooking steps"
+          (mouseenter)="showScrollbar()"
+          (mousemove)="showScrollbar()"
+          (scroll)="showScrollbar()"
+        >
+          @for (row of stepRows; track $index) {
+            <div class="recipe-detail__steps-row">
+              @for (step of row; track step.number) {
+                <div class="recipe-detail__step">
+                  <div class="recipe-detail__step-head">
+                    <span class="recipe-detail__step-number">{{ step.number }}.</span>
+                    <h3 class="recipe-detail__step-title">{{ step.title }}</h3>
+                    <p class="recipe-detail__chef" [style.background-color]="chefOf(step).color">
+                      <img [src]="chefOf(step).icon" alt="" [style.width.px]="chefOf(step).iconWidth" height="22" />
+                      {{ chefOf(step).name }}
+                    </p>
+                  </div>
+
+                  <p class="recipe-detail__step-text">{{ step.text }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
     </article>
 
     <section class="recipe-detail__cta" aria-label="Cookbook"></section>
