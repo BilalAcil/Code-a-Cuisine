@@ -227,11 +227,17 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0;
+    margin: 0 0 0 16px;
     color: #1e5515;
     font-size: 1.75rem; // 28px
     font-weight: 600;
     line-height: 1;
+    transition: margin-left 300ms ease-out;
+  }
+
+  // On hover the heading moves to the left edge of the picture.
+  &__cuisine:hover &__cuisine-title {
+    margin-left: 0;
   }
 
   // Emoji (28 x 28px). Every cuisine has its own hover effect, see below.
@@ -257,7 +263,13 @@
     width: 400px;
     height: 400px;
     object-fit: cover;
-    transition: transform 300ms ease-out;
+    border-radius: 20px;
+    transition: transform 300ms ease-out, border-radius 300ms ease-out;
+  }
+
+  // On hover the corners become square.
+  &__cuisine:hover &__cuisine-image {
+    border-radius: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {
