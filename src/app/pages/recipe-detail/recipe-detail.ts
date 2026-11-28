@@ -1,5 +1,6 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AutoHideScrollbar } from '../../directives/auto-hide-scrollbar';
 import { DIET_OPTIONS, TIME_OPTIONS } from '../../data/preference-options';
 import { RecipeFormService } from '../../services/recipe-form';
 
@@ -10,9 +11,6 @@ interface Step {
   chef: number;
   text: string;
 }
-
-/** How long the scrollbar of the steps stays visible after the last mouse move or scroll (ms). */
-const SCROLLBAR_VISIBLE_MS = 2000;
 
 /** A chef label: name, icon (with its width in px) and background color. */
 interface Chef {
@@ -36,7 +34,7 @@ const CHEFS: Chef[] = [
  */
 @Component({
   selector: 'app-recipe-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, AutoHideScrollbar],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })
@@ -71,12 +69,18 @@ export class RecipeDetail {
     { amount: '100g', name: 'Baby spinach' },
     { amount: '150g', name: 'Cherry tomatoes' },
     { amount: '1 piece', name: 'Egg' },
+    { amount: '2 pieces', name: 'Garlic cloves' },
+    { amount: '1 piece', name: 'Red onion' },
+    { amount: '50g', name: 'Pine nuts' },
   ];
 
   /** Extra ingredients the user has to add. Sample data for now. */
   protected readonly extraIngredients = [
     { amount: '40g', name: 'Parmesan cheese' },
     { amount: '30ml', name: 'Olive oil' },
+    { amount: '1 tsp', name: 'Chili flakes' },
+    { amount: '1 pinch', name: 'Salt' },
+    { amount: '1 pinch', name: 'Black pepper' },
     { amount: '', name: 'Herbs (dry basil, oregano, garlic)' },
   ];
 
@@ -112,19 +116,11 @@ export class RecipeDetail {
     return CHEFS[step.chef - 1];
   }
 
-  /** Whether the scrollbar of the steps is visible. */
-  protected readonly scrollbarVisible = signal(false);
+  /** Whether the user gave this recipe a heart. Only local for now; later it is saved in Supabase. */
+  protected readonly liked = signal(false);
 
-  private scrollbarTimer?: ReturnType<typeof setTimeout>;
-
-  constructor() {
-    inject(DestroyRef).onDestroy(() => clearTimeout(this.scrollbarTimer));
-  }
-
-  /** Shows the scrollbar and hides it again after a short time without mouse move or scrolling. */
-  protected showScrollbar(): void {
-    this.scrollbarVisible.set(true);
-    clearTimeout(this.scrollbarTimer);
-    this.scrollbarTimer = setTimeout(() => this.scrollbarVisible.set(false), SCROLLBAR_VISIBLE_MS);
+  /** Gives the recipe a heart or takes it back. */
+  protected toggleLike(): void {
+    this.liked.update((value) => !value);
   }
 }

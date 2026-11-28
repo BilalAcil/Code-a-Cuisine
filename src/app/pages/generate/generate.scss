@@ -58,7 +58,6 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    width: 162px;
     height: 62px;
     padding: 16px 26px;
     border: 0;
@@ -75,6 +74,7 @@
     &:hover {
       background-color: #055e05;
       color: #fff;
+      font-weight: 700;
     }
   }
 

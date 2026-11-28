@@ -49,6 +49,16 @@ export class RecipeFormService {
   /** Chosen diet, or null while nothing is chosen. */
   readonly diet = signal<Diet | null>(null);
 
+  /** Clears everything the user entered, so the next recipe starts from the beginning. */
+  reset(): void {
+    this.ingredients.set([]);
+    this.portions.set(2);
+    this.helpers.set(1);
+    this.timeCategory.set(null);
+    this.cuisine.set(null);
+    this.diet.set(null);
+  }
+
   /**
    * Adds an ingredient to the top of the list. If the same ingredient (same name, ignoring upper and
    * lower case) is already in the list with the same unit, the amounts are added together and the

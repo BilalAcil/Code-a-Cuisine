@@ -222,7 +222,6 @@
 
   // Main button below the card, 56px away from it.
   &__generate {
-    width: 258px;
     height: 62px;
     margin-top: 56px;
     padding: 16px 26px;
@@ -239,6 +238,7 @@
     &:hover {
       background-color: #055e05;
       color: #fff;
+      font-weight: 700;
     }
   }
 

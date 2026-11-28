@@ -63,7 +63,13 @@
         </section>
 
         <div class="recipe-detail__lists-row">
-          <div class="recipe-detail__lists">
+          <div
+            class="recipe-detail__lists"
+            appAutoHideScrollbar
+            tabindex="0"
+            role="region"
+            aria-label="Ingredients"
+          >
             <div class="recipe-detail__list">
               <h3 class="recipe-detail__list-title">Your ingredients</h3>
               <ul class="recipe-detail__items">
@@ -98,13 +104,10 @@
 
         <div
           class="recipe-detail__steps"
-          [class.recipe-detail__steps--scrollbar]="scrollbarVisible()"
+          appAutoHideScrollbar
           tabindex="0"
           role="region"
           aria-label="Cooking steps"
-          (mouseenter)="showScrollbar()"
-          (mousemove)="showScrollbar()"
-          (scroll)="showScrollbar()"
         >
           @for (row of stepRows; track $index) {
             <div class="recipe-detail__steps-row">
@@ -125,9 +128,31 @@
             </div>
           }
         </div>
+
+        <div class="recipe-detail__like">
+          <p class="recipe-detail__like-title">Just finished this meal?</p>
+          <p class="recipe-detail__like-text">Give it a heart, so that the others know this is delicious.</p>
+          <button
+            class="recipe-detail__like-button"
+            type="button"
+            aria-label="Give this recipe a heart"
+            [attr.aria-pressed]="liked()"
+            (click)="toggleLike()"
+          >
+            <img
+              [src]="liked() ? 'images/icon-heart-big-filled.png' : 'images/icon-heart-big.png'"
+              alt=""
+              width="40"
+              height="36"
+            />
+          </button>
+        </div>
       </div>
     </article>
 
-    <section class="recipe-detail__cta" aria-label="Cookbook"></section>
+    <section class="recipe-detail__cta" aria-label="Cookbook">
+      <p class="recipe-detail__cta-text">Find inspiration for your next culinary adventure!</p>
+      <a class="recipe-detail__cta-button" routerLink="/cookbook">Cookbook</a>
+    </section>
   </main>
 </div>
