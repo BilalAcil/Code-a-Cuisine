@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { NewRecipeLink } from '../../components/new-recipe-link/new-recipe-link';
 import { AutoHideScrollbar } from '../../directives/auto-hide-scrollbar';
 import { DIET_OPTIONS, TIME_OPTIONS } from '../../data/preference-options';
 import { RecipeFormService } from '../../services/recipe-form';
@@ -34,7 +35,7 @@ const CHEFS: Chef[] = [
  */
 @Component({
   selector: 'app-recipe-detail',
-  imports: [RouterLink, AutoHideScrollbar],
+  imports: [RouterLink, AutoHideScrollbar, NewRecipeLink],
   templateUrl: './recipe-detail.html',
   styleUrl: './recipe-detail.scss',
 })

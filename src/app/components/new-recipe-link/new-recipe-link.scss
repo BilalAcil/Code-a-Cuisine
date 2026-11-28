@@ -1,0 +1,27 @@
+:host {
+  display: block;
+}
+
+.new-recipe-link {
+  display: flex;
+  align-items: center;
+  gap: 10px; // between the text and the arrow
+  width: 286px;
+  height: 52px;
+  padding: 16px 26px;
+  color: #396039;
+  font-size: 1.25rem; // 20px
+  font-weight: 500;
+  line-height: 20px;
+  text-decoration: none;
+  transition: background-color 300ms ease-out;
+
+  &:hover {
+    background-color: #3960391a;
+  }
+
+  img {
+    width: 24px;
+    height: auto;
+  }
+}

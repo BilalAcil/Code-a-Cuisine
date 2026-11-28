@@ -1,5 +1,82 @@
-<main class="page">
-  <a routerLink="/">&larr; Back to start</a>
-  <h1>Cookbook</h1>
-  <p>Coming soon.</p>
-</main>
+<div class="cookbook">
+  <header class="cookbook__header">
+    <a routerLink="/" aria-label="Code à Cuisine, home">
+      <img src="images/logo-green.png" alt="Code à Cuisine" width="142" height="48" />
+    </a>
+    <a class="cookbook__back" routerLink="/">
+      <img src="images/icon-arrow.png" alt="" width="20" height="14" />
+      Back
+    </a>
+  </header>
+
+  <main class="cookbook__main">
+    <section class="cookbook__top" aria-label="Cookbook introduction">
+      <div class="cookbook__intro">
+        <h1 class="cookbook__title">Cookbook</h1>
+        <p class="cookbook__lead">
+          From quick bites to gourmet delights, explore them all in our ultimate cookbook and get
+          inspired for your next culinary adventure.
+        </p>
+      </div>
+      <section class="cookbook__most-liked" aria-labelledby="most-liked-title">
+        <div class="cookbook__most-liked-head">
+          <h2 id="most-liked-title">Most liked recipes</h2>
+          <img src="images/icon-heart-big.png" alt="" width="28" height="26" />
+        </div>
+
+        <div class="cookbook__most-liked-list" appDragScroll>
+          @for (recipe of mostLiked; track recipe.id) {
+            <a
+              class="cookbook__card"
+              [routerLink]="['/recipe', recipe.id]"
+              [queryParams]="{ from: 'cookbook' }"
+            >
+              <div class="cookbook__card-top">
+                <div class="cookbook__card-left">
+                  <img src="images/icon-clock-card.png" alt="" width="16" height="16" />
+                  <p>Cooking time: {{ recipe.minutes }}min</p>
+                </div>
+                <h3 class="cookbook__card-title">{{ recipe.title }}</h3>
+              </div>
+
+              <div class="cookbook__card-right">
+                <span class="cookbook__card-heart">
+                  <img src="images/icon-heart.png" alt="Likes" width="16" height="14" />
+                </span>
+                {{ recipe.likes }}
+              </div>
+            </a>
+          }
+        </div>
+      </section>
+    </section>
+
+    <section class="cookbook__cuisines" aria-label="Cuisine categories">
+      @for (cuisine of cuisines; track cuisine.name) {
+        <article class="cookbook__cuisine">
+          <h2 class="cookbook__cuisine-title">
+            {{ cuisine.name }} cuisine
+            <span
+              class="cookbook__cuisine-icon cookbook__cuisine-icon--{{ cuisine.effect }}"
+              aria-hidden="true"
+              >{{ cuisine.emoji }}</span
+            >
+          </h2>
+          <div class="cookbook__cuisine-frame">
+            <img
+              class="cookbook__cuisine-image"
+              [src]="cuisine.image"
+              [alt]="cuisine.name + ' cuisine'"
+              width="400"
+              height="400"
+            />
+          </div>
+        </article>
+      }
+    </section>
+
+    <div class="cookbook__actions">
+      <app-new-recipe-link />
+    </div>
+  </main>
+</div>

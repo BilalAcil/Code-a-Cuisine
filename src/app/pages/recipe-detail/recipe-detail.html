@@ -150,9 +150,15 @@
       </div>
     </article>
 
-    <section class="recipe-detail__cta" aria-label="Cookbook">
-      <p class="recipe-detail__cta-text">Find inspiration for your next culinary adventure!</p>
-      <a class="recipe-detail__cta-button" routerLink="/cookbook">Cookbook</a>
-    </section>
+    <div class="recipe-detail__bottom">
+      <section class="recipe-detail__cta" aria-label="Cookbook">
+        <p class="recipe-detail__cta-text">Find inspiration for your next culinary adventure!</p>
+        <a class="recipe-detail__cta-button" routerLink="/cookbook">Cookbook</a>
+      </section>
+
+      <div class="recipe-detail__actions">
+        <app-new-recipe-link />
+      </div>
+    </div>
   </main>
 </div>

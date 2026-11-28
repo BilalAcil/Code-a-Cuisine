@@ -1,3 +1,333 @@
-.page {
-  padding: 2rem clamp(1.5rem, 8.9vw, 8rem);
+.cookbook {
+  min-height: 100svh;
+  background-color: #fff;
+
+  // Logo and back link, at the same place as on the recipe detail page.
+  &__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-top: 2.5rem;
+    padding-left: 4.25rem;
+  }
+
+  &__header a {
+    display: inline-block;
+  }
+
+  &__header &__back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1e5515;
+    font-size: 0.875rem; // 14px
+    font-weight: 500;
+    line-height: 10px;
+    text-decoration: none;
+
+    img {
+      width: 20px;
+      height: auto;
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1440px;
+    margin: 4rem auto 0;
+    padding-bottom: 4rem;
+  }
+
+  // Upper part: introduction on the left, most liked recipes on the right.
+  &__top {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    width: 1330px;
+    max-width: 100%;
+    height: 280px;
+    padding: 40px 24px;
+    border-radius: 20px;
+    background-color: #3960390a;
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: none;
+    width: 456px;
+    height: 200px;
+  }
+
+  &__title {
+    margin: 0;
+    color: #1e5515;
+    font-size: 4rem; // 64px
+    font-weight: 700;
+    line-height: 64px;
+  }
+
+  &__lead {
+    margin: 0;
+    color: #10310b;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: normal; // Figma shows "100%", which is the font's own line height
+  }
+
+  // "Most liked recipes" with the heart, and below it the row of recipe cards.
+  &__most-liked {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: none;
+    width: 824px;
+    height: 170px;
+  }
+
+  &__most-liked-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    h2 {
+      margin: 0;
+      color: #1e5515;
+      font-size: 1.5rem; // 24px
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    img {
+      width: 28px;
+      height: 26px;
+    }
+  }
+
+  // Cards next to each other, scrolls sideways when there are more than fit.
+  &__most-liked-list {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none; // no visible scrollbar, the row still scrolls (Firefox)
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome, Edge, Safari
+    }
+  }
+
+  // Small recipe card, 370 x 124px: text on the left, likes on the right. A click opens the recipe (detail page, back link "Cookbook").
+  &__card {
+    display: flex;
+    flex: none;
+    align-items: flex-start;
+    gap: 24px;
+    width: 370px;
+    height: 124px;
+    padding: 16px 12px;
+    border-radius: 16px;
+    background-color: #dbe0dbb2;
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 300ms ease-out;
+
+    &:hover {
+      background-color: #dbe0db;
+    }
+  }
+
+  // Left part of the card: cooking time and recipe name (258 x 92px).
+  &__card-top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: none;
+    width: 258px;
+    height: 92px;
+  }
+
+  // Clock icon (16 x 16px, margin 2px 6px 6px 2px) and text.
+  &__card-left {
+    display: flex;
+    align-items: flex-start;
+
+    img {
+      width: 16px;
+      height: 16px;
+      margin: 2px 6px 6px 2px;
+    }
+
+    p {
+      margin: 0;
+      color: #396039;
+      font-size: 1rem; // 16px
+      font-weight: 500;
+      line-height: 20px;
+    }
+  }
+
+  // Likes: heart and number in a pill, without space between them.
+  &__card-right {
+    display: flex;
+    align-items: center;
+    width: 64px;
+    height: 32px;
+    padding: 6px 12px;
+    border-radius: 30px;
+    background-color: #3960394d;
+    color: #10310b;
+    font-family: Mulish, sans-serif;
+    font-size: 1rem; // 16px
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  // Heart icon (16 x 14px) with 3px 2px padding.
+  &__card-heart {
+    display: flex;
+    padding: 3px 2px;
+  }
+
+  // Recipe name below the top row.
+  &__card-title {
+    margin: 0;
+    color: #1e5515;
+    font-size: 1.5rem; // 24px
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  // The six cuisine categories: three per row, spread over the 1330px.
+  &__cuisines {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 56px 0;
+    width: 1330px;
+    max-width: 100%;
+    margin-top: 80px;
+  }
+
+  // Heading with emoji above the picture, 8px apart.
+  &__cuisine {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 400px;
+    height: 443px;
+  }
+
+  &__cuisine-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    color: #1e5515;
+    font-size: 1.75rem; // 28px
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  // Emoji (28 x 28px). Every cuisine has its own hover effect, see below.
+  &__cuisine-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    transition: transform 300ms ease-out;
+  }
+
+  // The picture zooms to 105% on hover, the 400 x 400px frame cuts off the edge.
+  &__cuisine-frame {
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+  }
+
+  &__cuisine-image {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 300ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &__cuisine:hover &__cuisine-image {
+      transform: scale(1.05);
+    }
+
+    // Italian: tilts 15 degrees to the right, Japanese: 15 degrees to the left.
+    &__cuisine:hover &__cuisine-icon--tilt-right {
+      transform: rotate(15deg);
+    }
+
+    &__cuisine:hover &__cuisine-icon--tilt-left {
+      transform: rotate(-15deg);
+    }
+
+    // German and Indian: turns around once, horizontally.
+    &__cuisine:hover &__cuisine-icon--flip {
+      animation: emoji-flip 600ms ease-in-out;
+    }
+
+    // Gourmet: gets a bit bigger and a light streak runs over it.
+    &__cuisine:hover &__cuisine-icon--shine {
+      transform: scale(1.25);
+    }
+
+    &__cuisine-icon--shine::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 90%) 50%, transparent 70%);
+      transform: translateX(-100%);
+    }
+
+    &__cuisine:hover &__cuisine-icon--shine::after {
+      transition: transform 600ms ease-in-out 150ms;
+      transform: translateX(100%);
+    }
+
+    // Fusion: hops up twice.
+    &__cuisine:hover &__cuisine-icon--hop {
+      animation: emoji-hop 600ms ease-out;
+    }
+  }
+
+  // "Generate new recipe" at the right edge, 64px below the cuisines.
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 1330px;
+    max-width: 100%;
+    margin-top: 64px;
+  }
+}
+
+@keyframes emoji-flip {
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes emoji-hop {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+
+  25%,
+  75% {
+    transform: translateY(-8px);
+  }
 }

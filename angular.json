@@ -39,6 +39,7 @@
               "@fontsource/quicksand/600.css",
               "@fontsource/quicksand/700.css",
               "@fontsource/mulish/400.css",
+              "@fontsource/mulish/500.css",
               "@fontsource/mulish/700.css",
               "src/styles.scss"
             ]
