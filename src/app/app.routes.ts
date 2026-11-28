@@ -37,6 +37,11 @@ export const routes: Routes = [
       import('./pages/recipe-detail/recipe-detail').then((m) => m.RecipeDetail),
   },
   {
+    path: 'cookbook/:cuisine',
+    title: 'Cuisine | Code à Cuisine',
+    loadComponent: () => import('./pages/cuisine/cuisine').then((m) => m.Cuisine),
+  },
+  {
     path: 'cookbook',
     title: 'Cookbook | Code à Cuisine',
     loadComponent: () => import('./pages/cookbook/cookbook').then((m) => m.Cookbook),
